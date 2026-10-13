@@ -17,7 +17,9 @@ function claimsOf(token: string): { sub?: string; role?: Role; name?: string; ex
   const part = token.split(".")[1];
   if (token.split(".").length !== 3 || !part) return undefined;
   try {
-    return JSON.parse(atob(part.replace(/-/g, "+").replace(/_/g, "/"))) as { sub?: string; role?: Role; name?: string; exp?: number };
+    const b64 = part.replace(/-/g, "+").replace(/_/g, "/");
+    const text = decodeURIComponent(Array.from(atob(b64 + "=".repeat((4 - (b64.length % 4)) % 4)), (c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0")).join(""));
+    return JSON.parse(text) as { sub?: string; role?: Role; name?: string; exp?: number };
   } catch {
     return undefined;
   }
