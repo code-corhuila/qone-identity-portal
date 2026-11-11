@@ -48,13 +48,13 @@ test("empty fields are marked beside them without a request", async () => {
 test("a student registers from the sign-in link and lands signed in", async () => {
   open("/login");
   await userEvent.click(screen.getByRole("link", { name: "Create your account" }));
-  await userEvent.type(screen.getByLabelText("Full name"), "Estudiante Nueva");
-  await userEvent.type(screen.getByLabelText("E-mail"), "estudiante.nueva@qampus.test");
+  await userEvent.type(screen.getByLabelText("Full name"), "Estudiante Prueba 06");
+  await userEvent.type(screen.getByLabelText("E-mail"), "estudiante.prueba06@qampus.test");
   await userEvent.type(screen.getByLabelText("Password"), "una-clave-larga");
   await userEvent.type(screen.getByLabelText("Student code"), "20261234");
   await userEvent.click(screen.getByRole("button", { name: "Create account" }));
   expect(await screen.findByText("Landed on the app")).toBeInTheDocument();
-  expect(session.user()).toMatchObject({ name: "Estudiante Nueva", role: "STUDENT" });
+  expect(session.user()).toMatchObject({ name: "Estudiante Prueba 06", role: "STUDENT" });
 });
 
 test("the registration checks each field and shows a taken e-mail as the service says", async () => {
