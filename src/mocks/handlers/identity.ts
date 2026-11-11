@@ -1,15 +1,18 @@
 import type { Msw } from "../msw";
 import type { AuthResponse, User } from "../../identity/model/identity";
 
-// MSW handlers of qone-identity-api (ID-01..ID-03) over the people of the seed, with the rules of
+// MSW handlers of qone-identity-api (ID-01..ID-03) over synthetic people of the demo seed, with the rules of
 // the contract: one neutral 401 for a wrong e-mail or password, students only by registration,
 // a taken e-mail or student code is 422, the same Idempotency-Key returns the same account with
 // 200. The tokens are unsigned look-alikes: the shell's session only reads their claims.
-export const DEMO_PASSWORD = "Qampus2026!";
+// The password of every seed person in the mocks. It is NOT the platform's demo password (that one
+// lives only in the `DEMO_PASSWORD` of qone-infra/.env): VITE_MOCK_PASSWORD picks another, else the
+// non-secret default below. Only the mocks know it; no real service accepts it.
+export const MOCK_PASSWORD: string = import.meta.env["VITE_MOCK_PASSWORD"] || "mock-password";
 
 const seed: User[] = [
-  { id: "11111111-1111-4111-8111-111111111111", email: "laura.gomez@uni.edu.co", name: "Laura Gómez", role: "STUDENT", studentCode: "20211001", program: "Ingeniería de Software", semester: 6, createdAt: "2026-08-01T12:00:00Z" },
-  { id: "22222222-2222-4222-8222-222222222221", email: "carlos.ramirez@uni.edu.co", name: "Carlos Ramírez", role: "PROFESSOR", studentCode: null, program: null, semester: null, createdAt: "2026-08-01T12:00:00Z" },
+  { id: "11111111-1111-4111-8111-111111111111", email: "estudiante.01@qampus.test", name: "Estudiante Demo 01", role: "STUDENT", studentCode: "2099000001", program: "Ingeniería de Software", semester: 6, createdAt: "2026-08-01T12:00:00Z" },
+  { id: "22222222-2222-4222-8222-222222222221", email: "profesor.01@qampus.test", name: "Profesor Demo 01", role: "PROFESSOR", studentCode: null, program: null, semester: null, createdAt: "2026-08-01T12:00:00Z" },
 ];
 let users: User[] = [];
 const passwords = new Map<string, string>();
@@ -60,11 +63,11 @@ export function identityHandlers({ http, HttpResponse }: Msw) {
   ];
 }
 
-/** Test support: back to the seed people, all with the demo password. */
+/** Test support: back to the seed people, all with the mock password. */
 export function reset(): void {
   users = seed.map((u) => ({ ...u }));
   passwords.clear();
-  for (const u of users) passwords.set(u.id, DEMO_PASSWORD);
+  for (const u of users) passwords.set(u.id, MOCK_PASSWORD);
   byKey.clear();
 }
 

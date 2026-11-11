@@ -50,6 +50,9 @@ caching it and the hashed chunks as immutable; `deploy/compose.yml` is what `qon
 
 - `qone-front` at `VITE_SHELL_URL`: `shell/apiClient`, `shell/session` and the mount point `/login/*`.
 - `qone-identity-api` behind the gateway; with the shell's `VITE_USE_MOCKS=true` the fixtures answer.
+  The mock people are synthetic (`estudiante.01@qampus.test`, `profesor.01@qampus.test`) and sign in
+  with `VITE_MOCK_PASSWORD` (default `mock-password`), never with the platform's demo password: against
+  the real services use the `DEMO_PASSWORD` of `qone-infra/.env`.
 
 ## Branching
 
