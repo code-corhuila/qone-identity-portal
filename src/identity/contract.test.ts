@@ -17,7 +17,7 @@ test("the seed people are Users and a sign-in answers an AuthResponse", () => {
 });
 
 test("what the form accepts is a valid RegisterRequest, and what it refuses is not", () => {
-  const ok = { name: "Daniela Ortiz", email: "daniela@uni.edu.co", password: "una-clave-larga", studentCode: "20261234", program: "Ingeniería de Software", semester: 1 };
+  const ok = { name: "Estudiante Prueba 06", email: "estudiante.prueba06@qampus.test", password: "una-clave-larga", studentCode: "20261234", program: "Ingeniería de Software", semester: 1 };
   expect(checkRegistration(ok)).toEqual({});
   expectValid(identity.schema("RegisterRequest"), ok, "registration");
   const bad = { ...ok, studentCode: "12ab", password: "short" };
